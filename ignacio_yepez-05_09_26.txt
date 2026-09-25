@@ -1,0 +1,116 @@
+
+CREATE TABLE tbl_alumnos
+(
+    id_alumno UUID PRIMARY KEY DEFAULT gen_random_vvid(),
+
+    nombre VARCHAR(100) NOT NULL,
+
+    apellido_paterno VARCHAR(100) NOT NULL,
+
+    apellido_materno VARCHAR(100) NULL,
+
+    fecha_de_nacimiento DATE NOT NULL,
+
+    curp VARCHAR(18) NOT NULL,
+
+    num_telefono_fijo VARCHAR(15) NULL,
+
+    num_telefono_movil VARCHAR(10) NOT NULL,
+
+    correo_personal VARCHAR(100) NULL,
+
+    correo_institucional VARCHAR(100) NULL,
+
+    nombre_tutor VARCHAR(100) NOT NULL,
+
+    contacto_tutor VARCHAR(10) NOT NULL,
+
+    num_control VARCHAR
+);
+
+
+CREATE TABLE ctl_paises(
+    id_pais BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    nombre VARCHAR NOT NULL,
+    prefijo VARCHAR(5) NOT NULL
+);
+
+
+CREATE TABLE ctl_estado(
+    id_estado BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+
+    nombre VARCHAR(100) NOT NULL,
+
+    id_pais BIGINT,
+
+    CONSTRAINT fk_paises_to_estados
+    FOREIGN KEY (id_pais)
+    REFERENCES ctl_paises (id_pais)
+    ON DELETE CASCADE
+);
+
+
+CREATE TABLE ctl_ciudades (
+    id_ciudad BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+
+    nombre VARCHAR(100) NOT NULL,
+
+    estado BIGINT,
+
+    CONSTRAINT fk_estados_to_ciudades
+    FOREIGN KEY (id_estado)
+    REFERENCES ctl estados (id_estado)
+    ON DELETE CASCADE
+);
+
+
+CREATE TABLE tbl_direcciones(
+    id_direccion UUID PRIMARY KEY DEFAULT gen_random_vvid(),
+
+    calle VARCHAR(50) NOT NULL,
+
+    numero_ext VARCHAR(10) NOT NULL,
+
+    numero_int VARCHAR(10) NULL,
+
+    colonia VARCHAR(50) NOT NULL,
+
+    cp VARCHAR(5) NOT NULL,
+
+    ciudad BIGINT,
+
+    CONSTRAINT fk_ciudades_to_direcciones
+    FOREIGN KEY (id ciudad)
+    ctl ciudades (id_ciudad)
+    ON DELETE CASCADE
+);
+
+
+CREATE TABLE rel_alumnos direcciones (
+    PRIMARY KEY (direccion, alumno),
+
+    direccion UUID,
+
+    alumno UUID
+);
+
+
+CREATE TABLE tbl_datos_medicos(
+    id_dato_medico BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+
+    tipo_de_sangre VARCHAR(5) NULL
+);
+
+
+CREATE TABLE ctl discapacidades(
+    id_incapacidad BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+
+    nombre VARCHAR(100) NOT NULL,
+
+    descripcion VARCHAR(300) NOT NULL
+);
+
+
+CREATE TABLE datos_medicos_discapacidades(
+
+);
